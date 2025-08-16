@@ -15,16 +15,20 @@ function createPool(config) {
 }
 
 // Create the default pool using environment variables (only once)
+const CONNECTION_LIMIT = parseInt(process.env.DB_CONNECTION_LIMIT, 10) || 5;
 const defaultConfig = {
     host: process.env.DB_HOST || 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
     user: process.env.DB_USER || 'umhwrkzsbn2bdp7p',
     password: process.env.DB_PASSWORD || '0EjHTPEKuIGD9jXtEPbK',
     database: process.env.DB_NAME || 'bjhvgr90ewlwfy7hvrrp',
+    connectionLimit: CONNECTION_LIMIT,
+    waitForConnections: true,
+    queueLimit: parseInt(process.env.DB_QUEUE_LIMIT, 10) || 100
 };
 createPool(defaultConfig);
 
 // Simple concurrency queue to limit simultaneous DB operations
-const MAX_CONCURRENT_QUERIES = parseInt(process.env.DB_MAX_CONCURRENT_QUERIES, 10) || 10;
+const MAX_CONCURRENT_QUERIES = parseInt(process.env.DB_MAX_CONCURRENT_QUERIES, 10) || Math.max(1, CONNECTION_LIMIT);
 let currentConcurrent = 0;
 const taskQueue = [];
 
