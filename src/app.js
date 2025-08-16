@@ -63,4 +63,4 @@ app.use('/api/feedback', feedbackRoutes);
 // =======================
 // Server Start
 // =======================
-app.listen(3000, () => console.log('Backend running on http://192.168.31.224:3000'));
+app.listen(3000, () => console.log('Backend running on 3000'));
