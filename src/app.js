@@ -14,16 +14,15 @@ require('dotenv').config();
 // =======================
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
 // =======================
 // MySQL Pool Setup
 // =======================
 const { createPool } = require('./utils/mysqlQuery');
 const pool = createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    host: 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
+  user: 'umhwrkzsbn2bdp7p',
+  password: '0EjHTPEKuIGD9jXtEPbK',
+  database: 'bjhvgr90ewlwfy7hvrrp',
 });
 
 // =======================
@@ -64,6 +63,4 @@ app.use('/api/feedback', feedbackRoutes);
 // =======================
 // Server Start
 // =======================
-app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-     });
+app.listen(3000, () => console.log('Backend running on http://192.168.31.224:3000'));
