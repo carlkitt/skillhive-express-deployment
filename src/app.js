@@ -67,4 +67,4 @@ app.use('/api/featured_tutors', featuredTutorsRoutes);
 // =======================
 // Server Start
 // =======================
-app.listen(3000, () => console.log('Backend running on http://192.168.31.224:3000'));
+app.listen(3306, () => console.log('Backend server is rendering on port 3306'));
