@@ -18,7 +18,18 @@ router.get('/:id', async (req, res) => {
   try {
     const user = await users.getUserById(id);
     if (!user) return res.status(404).json({ error: 'User not found' });
-    res.json(user);
+
+    // Normalize common profile fields so frontend can rely on consistent keys
+    const normalized = Object.assign({}, user);
+    normalized.id = user.user_id ?? user.id ?? '';
+    normalized.profile_pic_url = (user.profile_pic_url || user.profile_pic || user.profile_picture || '').toString();
+    // If your DB has a different column for border/badge adjust mappings here
+    normalized.profile_border_url = (user.profile_border_url || user.profile_border || '').toString();
+    // Map current_badge or badge_url to badge_url
+    normalized.badge_url = (user.badge_url || user.current_badge || user.badge || '').toString();
+
+    // Return consistent object wrapper
+    res.json({ user: normalized });
   } catch (err) {
     console.error('Error fetching user by id:', err);
     res.status(500).json({ error: 'Server error' });

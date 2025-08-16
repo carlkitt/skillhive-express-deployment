@@ -4,7 +4,7 @@ const { createPool } = require('../utils/mysqlQuery');
 
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
-    host: 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
+  host: 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
   user: 'umhwrkzsbn2bdp7p',
   password: '0EjHTPEKuIGD9jXtEPbK',
   database: 'bjhvgr90ewlwfy7hvrrp',
