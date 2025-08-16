@@ -1,0 +1,32 @@
+c:\projects\SkillHive\backend\src\app.js
+Purpose:
+The main entry point for your backend server. Sets up the Express app, applies middleware, and connects route modules.
+
+c:\projects\SkillHive\backend\src\models\user.js
+Purpose:
+Defines and exports user data. In a real project, this would interface with a database. For now, it holds a sample user in an array.
+
+c:\projects\SkillHive\backend\src\config\secret.js
+Purpose:
+Stores and exports configuration values, such as your JWT secret. Keeps sensitive or environment-specific data separate from logic.
+
+c:\projects\SkillHive\backend\src\routes\auth.js
+Purpose:
+Handles authentication-related endpoints (e.g., /api/login).
+
+Checks credentials against the user model.
+Issues JWT tokens on successful login.
+c:\projects\SkillHive\backend\src\routes\protected.js
+Purpose:
+Handles endpoints that require authentication (e.g., /api/protected).
+
+Verifies JWT tokens.
+Returns protected data if the token is valid.
+
+Summary:
+
+app.js: App setup and route wiring.
+models/user.js: User data.
+config/secret.js: App secrets/config.
+routes/auth.js: Login/auth endpoints.
+routes/protected.js: JWT-protected endpoints.
