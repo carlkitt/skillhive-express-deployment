@@ -1,13 +1,11 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+require('dotenv').config();
 
 // =======================
 // MySQL Query Library
 // =======================
-const mysql = require('mysql2');
+const mysql = require('mysql');
 
-// Create a shared pool instance using environment variables (fall back to embedded values if env not set)
+// Create a shared pool instance using environment variables
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
     user: process.env.DB_USER || 'umhwrkzsbn2bdp7p',

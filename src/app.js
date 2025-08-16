@@ -7,11 +7,12 @@ const cors = require('cors');
 // =======================
 // Environment Variables
 // =======================
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+require('dotenv').config();
 
-const port = process.env.DB_HOST_PORT || 3306;
+// =======================
+// Environment Variables
+// =======================
+require('dotenv').config();
 
 // =======================
 // MySQL Pool Setup
@@ -34,9 +35,11 @@ const userRoutes = require('./routes/user');
 const pointsRoutes = require('./routes/points');
 const paymongoRoutes = require('./routes/paymongo');
 const inventoryRoutes = require('./routes/inventory');
+const tutorsRoutes = require('./routes/tutors');
 const sessionsRoutes = require('./routes/sessions');
 //const availableTimeRoutes = require('./availableTimeRoutes');
 const feedbackRoutes = require('./routes/feedback');
+const featuredTutorsRoutes = require('./routes/featured_tutors');
 
 // =======================
 // App Setup
@@ -50,6 +53,7 @@ app.use(express.json());
 app.use('/api/sessions', sessionsRoutes);
 app.use('/api/paymongo', paymongoRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/tutors', tutorsRoutes);
 // =======================
 app.use('/api', authRoutes);
 app.use('/api', protectedRoutes);
@@ -58,8 +62,9 @@ app.use('/api/user', userRoutes);
 app.use('/api/user', pointsRoutes);
 //app.use('/api', availableTimeRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/featured_tutors', featuredTutorsRoutes);
 
 // =======================
 // Server Start
 // =======================
-app.listen(port, () => console.log(`Backend running on port ${port}`));
+app.listen(3000, () => console.log('Backend running on http://192.168.31.224:3000'));

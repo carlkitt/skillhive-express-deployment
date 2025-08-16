@@ -1,19 +1,39 @@
 const { pool, query } = require('../utils/mysqlQuery');
 const router = require('express').Router();
 
-// Route to get all sessions
+// Route to get all sessions, optionally filtered by category_id
 router.get('/', async (req, res) => {
   try {
-    const results = await query(
-      pool,
-      'SELECT session_id AS id, price, title, tutor_id, skill_tag, successful_sessions, rating, rating_count FROM sessions'
-    );
+    const categoryId = req.query.category_id;
+    let sql = `SELECT s.session_id AS id,
+                      s.price,
+                      s.title,
+                      s.tutor_id,
+                      s.skill_tag,
+                      s.successful_sessions,
+                      s.rating,
+                      s.rating_count
+               FROM sessions s`;
+    const params = [];
+
+    if (categoryId) {
+      // Prefer explicit category_id on sessions. If session.category_id is NULL, also include
+      // sessions where the tutor belongs to the category (backwards compatibility).
+      sql += ` WHERE (s.category_id = ? OR EXISTS (
+                  SELECT 1 FROM tutor_categories tc WHERE tc.tutor_id = s.tutor_id AND tc.category_id = ?
+                ))`;
+      params.push(categoryId, categoryId);
+    }
+
+    const results = await query(pool, sql, params);
     res.json(results);
   } catch (err) {
+    console.error('Error fetching sessions', err);
     res.status(500).json({ error: err.message });
   }
 });
-// backend/src/routes/sessions.js
+
+// Get single session by id (existing behavior)
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -37,6 +57,7 @@ router.get('/:id', async (req, res) => {
     if (results.length === 0) return res.status(404).json({ error: 'Not found' });
     res.json(results[0]);
   } catch (err) {
+    console.error('Error fetching session by id', err);
     res.status(500).json({ error: err.message });
   }
 });
