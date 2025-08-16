@@ -2,10 +2,10 @@
   "name": "my-node-express-project",
   "version": "1.0.0",
   "description": "A simple Node.js project using Express for backend development.",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
