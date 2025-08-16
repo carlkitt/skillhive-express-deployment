@@ -6,13 +6,8 @@ const cors = require('cors');
 
 // =======================
 // Environment Variables
-// =======================
-require('dotenv').config();
-
-// =======================
-// Environment Variables
-// =======================
-require('dotenv').config();
+// Try to load .env if dotenv is available (don't crash if it's not installed in production)
+try { require('dotenv').config(); } catch (err) { /* dotenv not installed; ignore */ }
 
 // =======================
 // MySQL Pool Setup
@@ -67,4 +62,5 @@ app.use('/api/featured_tutors', featuredTutorsRoutes);
 // =======================
 // Server Start
 // =======================
-app.listen(3306, () => console.log('Backend server is rendering on port 3306'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Backend server is rendering on port ${PORT}`));
