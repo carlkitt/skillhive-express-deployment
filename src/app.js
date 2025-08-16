@@ -64,4 +64,6 @@ app.use('/api/feedback', feedbackRoutes);
 // =======================
 // Server Start
 // =======================
-app.listen(3000, () => console.log('Backend running on 3000'));
+app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+     });
