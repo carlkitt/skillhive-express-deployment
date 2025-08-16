@@ -8,9 +8,9 @@ const mysql = require('mysql');
 // Create a shared pool instance using environment variables
 const pool = mysql.createPool({
     host: 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
-    user: 'umhwrkzsbn2bdp7p',
-    password: '0EjHTPEKuIGD9jXtEPbK',
-    database: 'bjhvgr90ewlwfy7hvrrp',
+  user: 'umhwrkzsbn2bdp7p',
+  password: '0EjHTPEKuIGD9jXtEPbK',
+  database: 'bjhvgr90ewlwfy7hvrrp',
 });
 
 /**
