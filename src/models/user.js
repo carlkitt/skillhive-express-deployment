@@ -11,10 +11,10 @@ const mysql = require('mysql2/promise');
 const jwt = require('jsonwebtoken');
 
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'skillhivedb',
+  host: 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
+  user: 'umhwrkzsbn2bdp7p',
+  password: '0EjHTPEKuIGD9jXtEPbK',
+  database: 'bjhvgr90ewlwfy7hvrrp',
 
 });
 

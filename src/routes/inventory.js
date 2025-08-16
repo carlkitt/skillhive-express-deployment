@@ -4,10 +4,10 @@ const { createPool } = require('../utils/mysqlQuery');
 
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'skillhivedb',
+    host: 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
+  user: 'umhwrkzsbn2bdp7p',
+  password: '0EjHTPEKuIGD9jXtEPbK',
+  database: 'bjhvgr90ewlwfy7hvrrp',
 });
 
 // Set on_use for a category (border or badge): set all to 0, then one to 1
