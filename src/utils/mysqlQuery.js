@@ -1,4 +1,5 @@
-require('dotenv').config();
+// Try to load .env if dotenv is available (don't crash if it's not installed in production)
+try { require('dotenv').config(); } catch (err) { /* dotenv not installed; ignore */ }
 
 // =======================
 // MySQL Query Library
@@ -41,4 +42,5 @@ module.exports = {
     createPool,
     query,
     pool
+    
 };
