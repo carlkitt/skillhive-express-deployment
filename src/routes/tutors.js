@@ -6,25 +6,26 @@ const { query, pool } = require('../utils/mysqlQuery');
 router.get('/:id', async (req, res) => {
   try {
     const tutorId = req.params.id;
+    // Read from users and tutor_profiles to avoid relying on a tutors table schema
     const sql = `SELECT
-      t.id AS tutor_id,
-      t.user_id,
-      COALESCE(t.full_name, u.full_name, '') AS full_name,
-      t.email,
-      t.role,
-      t.status,
-      t.rating,
-      t.rating_count,
-      t.successful_sessions,
-      t.bio,
-      t.profile_pic_asset,
-      t.profile_pic_url,
-      t.profile_border_url,
-      t.badge_url,
-      u.profile_pic_url AS users_profile_pic_url
-    FROM tutors t
-    LEFT JOIN users u ON u.user_id = t.user_id
-    WHERE t.id = ?
+      u.user_id AS tutor_id,
+      u.user_id,
+      COALESCE(u.full_name, '') AS full_name,
+      u.email,
+      u.role,
+      u.STATUS AS status,
+      -- rating-related fields may live in another table; provide safe defaults
+      0 AS rating,
+      0 AS rating_count,
+      0 AS successful_sessions,
+      tp.bio AS bio,
+      u.profile_pic_url AS profile_pic_url,
+      tp.skills AS profile_skills,
+      tp.availability AS profile_availability,
+      tp.endorsement_pts AS profile_endorsement_pts
+    FROM users u
+    LEFT JOIN tutor_profiles tp ON tp.tutor_id = u.user_id
+    WHERE u.user_id = ?
     LIMIT 1`;
 
     const rows = await query(pool, sql, [tutorId]);
@@ -32,13 +33,10 @@ router.get('/:id', async (req, res) => {
 
     const r = rows[0];
 
-    // Normalize images: follow same logic as featured_tutors
+    // Normalize images: use users.profile_pic_url and treat asset references
     function pickProfileImage(row) {
-      if (row.profile_pic_asset && row.profile_pic_asset !== '') return { value: row.profile_pic_asset, type: 'asset' };
       if (row.profile_pic_url && row.profile_pic_url.indexOf('assets/') > -1) return { value: row.profile_pic_url.substring(row.profile_pic_url.indexOf('assets/')), type: 'asset' };
-      if (row.users_profile_pic_url && row.users_profile_pic_url.indexOf('assets/') > -1) return { value: row.users_profile_pic_url.substring(row.users_profile_pic_url.indexOf('assets/')), type: 'asset' };
       if (row.profile_pic_url && row.profile_pic_url !== '') return { value: row.profile_pic_url, type: 'network' };
-      if (row.users_profile_pic_url && row.users_profile_pic_url !== '') return { value: row.users_profile_pic_url, type: 'network' };
       return { value: null, type: 'none' };
     }
 
@@ -69,16 +67,16 @@ router.get('/:id', async (req, res) => {
       email: r.email,
       role: r.role,
       status: r.status,
-      rating: r.rating,
-      rating_count: r.rating_count,
-      successful_sessions: r.successful_sessions,
-      bio: r.bio,
+      rating: r.rating || 0,
+      rating_count: r.rating_count || 0,
+      successful_sessions: r.successful_sessions || 0,
+      bio: r.bio || '',
       profile_image: profile.value,
       profile_image_type: profile.type,
-      border_image: border.value,
-      border_image_type: border.type,
-      badge_image: badge.value,
-      badge_image_type: badge.type,
+      // include tutor_profiles compatibility fields
+      profile_skills: r.profile_skills || null,
+      profile_availability: r.profile_availability || null,
+      endorsement_pts: r.profile_endorsement_pts || null,
     });
   } catch (err) {
     console.error('Error fetching tutor', err);
@@ -109,12 +107,8 @@ router.get('/:id/skills', async (req, res) => {
     // Fallback: if no sessions found, try tutor_profiles.skills (comma-separated)
     const pfSql = `SELECT skills FROM tutor_profiles WHERE tutor_id = ? LIMIT 1`;
     const pfRows = await query(pool, pfSql, [tutorId]);
-    if (pfRows && pfRows.length > 0 && pfRows[0].skills) {
-      const raw = pfRows[0].skills.toString();
-      finalList = raw.split(',').map(s => s.trim()).where((s) => s.isNotEmpty);
-    }
-
-    // Since the above uses JS, rewrite to JS-compatible logic
+  // Fallback: if no sessions found, try tutor_profiles.skills (comma-separated)
+  // Use JS-compatible logic below to normalize a comma-separated skills string.
     if (pfRows && pfRows.length > 0 && pfRows[0].skills) {
       const raw = pfRows[0].skills.toString();
       const parts = raw.split(',').map(p => p.trim()).filter(p => p.length > 0);

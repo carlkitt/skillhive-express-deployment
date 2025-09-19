@@ -1,0 +1,6 @@
+2025-09-04T13:48:29.267Z Booking transaction failed
+Error: Unknown column 'fullname' in 'field list'
+    at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
+    at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:104:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+

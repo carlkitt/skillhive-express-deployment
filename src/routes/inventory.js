@@ -4,10 +4,10 @@ const { createPool } = require('../utils/mysqlQuery');
 
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
-    user: process.env.DB_USER || 'umhwrkzsbn2bdp7p',
-    password: process.env.DB_PASSWORD || '0EjHTPEKuIGD9jXtEPbK',
-    database: process.env.DB_NAME || 'bjhvgr90ewlwfy7hvrrp',
+   host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'skillhivedb',
 });
 
 // Set on_use for a category (border or badge): set all to 0, then one to 1

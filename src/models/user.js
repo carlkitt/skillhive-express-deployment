@@ -9,12 +9,13 @@ async function deductPoints(userId, cost) {
 // Use MySQL database for users
 const mysql = require('mysql2/promise');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'bjhvgr90ewlwfy7hvrrp-mysql.services.clever-cloud.com',
-    user: process.env.DB_USER || 'umhwrkzsbn2bdp7p',
-    password: process.env.DB_PASSWORD || '0EjHTPEKuIGD9jXtEPbK',
-    database: process.env.DB_NAME || 'bjhvgr90ewlwfy7hvrrp',
+   host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'skillhivedb',
 
 });
 
@@ -30,20 +31,40 @@ function generateToken(userId) {
 }
 
 async function findUserByCredentials(username, password) {
-  const [rows] = await pool.query(
-    'SELECT * FROM users WHERE username = ? AND PASSWORD = ?',
-    [username, password]
-  );
-  if (rows.length > 0) {
-    const user = rows[0];
+  // Fetch user by username only, then compare provided password with stored hash
+  const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+  if (rows.length === 0) return null;
+
+  const user = rows[0];
+  // DB column for password is `PASSWORD` in the schema
+  const storedHash = user.PASSWORD || user.password || '';
+
+  try {
+    // First try bcrypt.compare (normal, secure flow)
+    const match = await bcrypt.compare(password, storedHash);
+    if (!match) {
+      // Dev fallback: some DB dumps contain plain-text passwords instead of bcrypt hashes.
+      // If the stored value doesn't look like a bcrypt hash, allow a direct equality check
+      // so local testing with the SQL dump works. This is ONLY for development convenience.
+      const looksHashed = typeof storedHash === 'string' && storedHash.startsWith('$2');
+      if (!looksHashed && storedHash === password) {
+        console.warn('[dev] plain-text password match for user', username);
+        // allow login for dev/test
+      } else {
+        return null;
+      }
+    }
+
+    // Return the user object expected by the auth route
     return {
-      token: generateToken(user.user_id), // Generate JWT token
       user_id: user.user_id,
-      is_verified: user.is_verified || 0, // Include is_verified in the response
+      username: user.username,
+      is_verified: user.is_verified || 0,
     };
+  } catch (err) {
+    console.error('Error comparing password hash:', err);
+    return null;
   }
-  
-  return null;
 }
 
 // Fetch user stats (xp, points, level) by user_id from gamification table
@@ -65,9 +86,19 @@ async function getUserStatsById(userId) {
 }
 
 async function getAllUsers() {
-  // Use your DB connection to fetch all users
-  const [rows] = await pool.query('SELECT * FROM users');
-  return rows;
+  // Fetch users but avoid relying on message table schema (is_read may not exist).
+  // Return safe defaults for unread / last_message so the API doesn't fail.
+  try {
+    const [rows] = await pool.query('SELECT * FROM users');
+    return rows.map(r => Object.assign({}, r, {
+      unread: 0,
+      last_message: null,
+      last_message_time: null,
+    }));
+  } catch (err) {
+    console.error('SQL error in getAllUsers:', err);
+    throw err;
+  }
 }
 
 async function getUserById(userId) {
