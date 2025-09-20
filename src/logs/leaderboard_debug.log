@@ -4410,3 +4410,195 @@ PARAMS: ["tutor"]
     
 PARAMS: ["tutor"]
 
+--- DEBUG 2025-09-20T04:53:48.836Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T04:55:07.112Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T04:56:19.532Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T04:56:43.875Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T04:56:55.467Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T04:57:00.961Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T04:57:40.062Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+
+--- DEBUG 2025-09-20T05:04:01.546Z ---
+
+      SELECT
+        u.user_id AS id,
+        COALESCE(u.full_name, '') AS name,
+        COALESCE(u.year_level, '') AS year,
+        COALESCE(u.course, '') AS course,
+                COALESCE(NULLIF(u.college, ''), 'Unknown') AS college,
+  COALESCE(u.profile_pic_url, '') AS profile_pic_url,
+  COALESCE(t.rating, 0) AS rating,
+  COALESCE(g.points, 0) AS gamification_points,
+        (
+          SELECT COUNT(*) FROM sessions s
+          LEFT JOIN tutors tt ON tt.id = s.tutor_id
+          WHERE s.tutor_id = u.user_id OR tt.user_id = u.user_id
+        ) AS sessions
+  FROM users u
+  LEFT JOIN tutors t ON t.user_id = u.user_id
+  LEFT JOIN gamification g ON g.user_id = u.user_id
+      WHERE LOWER(u.role) = ?
+      LIMIT 200
+    
+PARAMS: ["tutor"]
+

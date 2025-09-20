@@ -20,7 +20,9 @@ async function tutorRespond(req, res) {
 
 	const tutorUserId = payload.userId;
 	const bookingId = req.params.bookingId;
-	const { decision, reason } = req.body || {};
+	// Accept either `reason` or legacy `tutor_reason` from clients
+	const decision = (req.body && req.body.decision) ? req.body.decision : null;
+	const reason = (req.body && typeof req.body.reason !== 'undefined') ? req.body.reason : ((req.body && typeof req.body.tutor_reason !== 'undefined') ? req.body.tutor_reason : null);
 	if (!bookingId) return res.status(400).json({ error: 'bookingId required' });
 	if (!decision || (decision !== 'accepted' && decision !== 'rejected')) return res.status(400).json({ error: 'decision must be "accepted" or "rejected"' });
 

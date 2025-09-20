@@ -54,6 +54,26 @@ router.get('/search', async (req, res) => {
   }
 });
 
+// GET /api/user/by-student/:sid - resolve a user by student_id_no or user_id
+router.get('/by-student/:sid', async (req, res) => {
+  const { sid } = req.params;
+  if (!sid) return res.status(400).json({ error: 'Missing student id' });
+  try {
+    // Look up by student_id_no first, then user_id as fallback
+    const rows = await query(pool, 'SELECT * FROM users WHERE student_id_no = ? OR user_id = ? LIMIT 1', [sid, sid]);
+    if (!rows || rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = rows[0];
+    const normalized = Object.assign({}, user);
+    normalized.id = user.user_id ?? user.id ?? '';
+    normalized.profile_pic_url = (user.profile_pic_url || user.profile_pic || user.profile_picture || '').toString();
+    normalized.full_name = (user.full_name || user.fullname || user.name || '').toString();
+    return res.json({ user: normalized });
+  } catch (err) {
+    console.error('Error resolving user by student id:', err && err.message ? err.message : err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // GET /api/user/:id - return single user
 router.get('/:id', async (req, res) => {
   const { id } = req.params;

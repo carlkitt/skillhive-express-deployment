@@ -255,7 +255,7 @@ router.post('/', async (req, res) => {
         { name: 'session_id', val: sessionId || null },
         { name: 'tutor_id', val: tutorId || null },
         { name: 'user_id', val: bookingUserId },
-        { name: 'status', val: 'booked' },
+        { name: 'status', val: 'pending' },
         { name: 'price_charged', val: finalPrice },
   { name: 'voucher_inventory_id', val: voucher_inventory_id || null },
   { name: 'voucher_item_id', val: voucher_item_id || voucherItemSnapshot || null },
@@ -287,8 +287,8 @@ router.post('/', async (req, res) => {
       let ins = null;
       if (fields.length === 0) {
         // fallback to original minimal insert if columns unexpectedly missing
-        insertSql = 'INSERT INTO bookings (available_time_id, session_id, tutor_id, user_id, status, price_charged, booked_at) VALUES (?, ?, ?, ?, ?, ?, NOW())';
-        const _res = await conn.query(insertSql, [available_time_id, sessionId || null, tutorId || null, bookingUserId, 'booked', finalPrice]);
+  insertSql = 'INSERT INTO bookings (available_time_id, session_id, tutor_id, user_id, status, price_charged, booked_at) VALUES (?, ?, ?, ?, ?, ?, NOW())';
+  const _res = await conn.query(insertSql, [available_time_id, sessionId || null, tutorId || null, bookingUserId, 'pending', finalPrice]);
         ins = Array.isArray(_res) ? _res[0] : _res;
       } else {
         // build placeholders: for columns using NOW() we don't add a param
@@ -480,3 +480,61 @@ if (process.env.NODE_ENV !== 'production') {
     }
   });
 }
+
+// Allow booking owner to update simple fields (e.g., status) via PATCH /api/bookings/:id
+// This enables clients to set status='pending' after creating a booking if desired.
+router.patch('/:id', async (req, res) => {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ error: 'Missing token' });
+  let payload;
+  try {
+    const token = auth.split(' ')[1];
+    payload = jwt.verify(token, JWT_SECRET);
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+
+  const bookingId = req.params.id;
+  if (!bookingId) return res.status(400).json({ error: 'booking id required' });
+  const { status } = req.body || {};
+  if (typeof status === 'undefined') return res.status(400).json({ error: 'status required' });
+
+  try {
+    const conn = await pool.getConnection();
+    try {
+      // Resolve authenticated user's student_id_no to match bookings.user_id
+      const [uRows] = await conn.query('SELECT student_id_no FROM users WHERE user_id = ? LIMIT 1', [payload.userId]);
+      if (!uRows || uRows.length === 0) {
+        conn.release();
+        return res.status(403).json({ error: 'User not found' });
+      }
+      const studentIdNo = uRows[0].student_id_no;
+
+      // Only allow owner to update their booking
+      const [bRows] = await conn.query('SELECT * FROM bookings WHERE id = ? LIMIT 1', [bookingId]);
+      if (!bRows || bRows.length === 0) {
+        conn.release();
+        return res.status(404).json({ error: 'Booking not found' });
+      }
+      const booking = bRows[0];
+      if (String(booking.user_id) !== String(studentIdNo)) {
+        conn.release();
+        return res.status(403).json({ error: 'Not authorized to modify this booking' });
+      }
+
+      // Perform update (only update status field here)
+      const [upd] = await conn.query('UPDATE bookings SET status = ? WHERE id = ? AND user_id = ?', [status, bookingId, studentIdNo]);
+      const affected = upd && (upd.affectedRows || upd.affected_rows || upd.affected) ? (upd.affectedRows || upd.affected_rows || upd.affected) : 0;
+      conn.release();
+      if (affected === 0) return res.status(409).json({ error: 'No rows updated' });
+      return res.json({ ok: true, booking_id: bookingId, status });
+    } catch (err) {
+      conn.release();
+      console.error('PATCH booking failed', err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+  } catch (err) {
+    console.error('PATCH booking route error', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});

@@ -231,3 +231,37 @@
     at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
     at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:341:24
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-09-20T04:11:48.914Z ATTEMPT userId=3 available_time_id=3 voucher=<none>
+2025-09-20T04:11:48.972Z voucher_usage insert error: Error: Cannot add or update a child row: a foreign key constraint fails (`skillhivedb`.`voucher_usage`, CONSTRAINT `voucher_usage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+    at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
+    at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:341:24
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-09-20T04:18:34.433Z ATTEMPT userId=3 available_time_id=3 voucher=<none>
+2025-09-20T04:18:34.497Z voucher_usage insert error: Error: Cannot add or update a child row: a foreign key constraint fails (`skillhivedb`.`voucher_usage`, CONSTRAINT `voucher_usage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+    at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
+    at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:341:24
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-09-20T04:23:40.850Z ATTEMPT userId=3 available_time_id=3 voucher=<none>
+2025-09-20T04:23:40.906Z voucher_usage insert error: Error: Cannot add or update a child row: a foreign key constraint fails (`skillhivedb`.`voucher_usage`, CONSTRAINT `voucher_usage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+    at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
+    at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:341:24
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-09-20T04:27:18.670Z ATTEMPT userId=3 available_time_id=3 voucher=<none>
+2025-09-20T04:27:18.743Z voucher_usage insert error: Error: Cannot add or update a child row: a foreign key constraint fails (`skillhivedb`.`voucher_usage`, CONSTRAINT `voucher_usage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+    at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
+    at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:341:24
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-09-20T04:55:30.127Z ATTEMPT userId=3 available_time_id=1 voucher=<none>
+2025-09-20T04:55:30.169Z voucher_usage insert error: Error: Cannot add or update a child row: a foreign key constraint fails (`skillhivedb`.`voucher_usage`, CONSTRAINT `voucher_usage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+    at PromisePoolConnection.query (C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\node_modules\mysql2\lib\promise\connection.js:29:22)
+    at C:\Users\Lenovo x260\Documents\GitHub\SkillHive\backend\src\routes\bookings.js:341:24
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-09-20T05:18:43.266Z ATTEMPT userId=6 available_time_id=6 voucher=<none>
+2025-09-20T05:19:13.608Z ATTEMPT userId=6 available_time_id=6 voucher=<none>
+2025-09-20T05:19:21.520Z ATTEMPT userId=6 available_time_id=3 voucher=<none>
+2025-09-20T05:30:44.469Z ATTEMPT userId=6 available_time_id=3 voucher=<none>
+2025-09-20T05:42:23.705Z ATTEMPT userId=6 available_time_id=3 voucher=<none>
+2025-09-20T05:44:07.085Z ATTEMPT userId=6 available_time_id=22 voucher=<none>
+2025-09-20T05:50:38.208Z ATTEMPT userId=6 available_time_id=40 voucher=<none>
+2025-09-20T05:50:48.187Z ATTEMPT userId=6 available_time_id=3 voucher=<none>
+2025-09-20T05:51:40.304Z ATTEMPT userId=6 available_time_id=3 voucher=<none>
